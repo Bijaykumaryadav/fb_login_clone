@@ -1,28 +1,45 @@
 const express = require("express");
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
+const db = require("./config/mongoose");
 const app = express();
 const port = 8000;
-const db = require('./config/mongoose');
+const cookieParser = require("cookie-parser");
 
+//set up the express session and passport
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
 
-// const Mongostore = require('connect-mongo');
+//to set cookie-parser
+app.use(express.urlencoded());
+app.use(cookieParser());
 
-//to use static folder in our project
+//to ser static folder in our project
 app.use(express.static("./assets"));
 
-//to set view engine
+//to set view engine 
 app.set("view engine", "ejs");
 app.set("views", "./views");
 
-app.use
+// Setup session middleware
+app.use(
+  session({
+    secret: "your-secret-key",
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: "mongodb://127.0.0.1/facebook_db",
+      mongooseConnection: db,
+      autoRemove: "disabled",
+    }),
+  })
+);
 
-//to set routes
+// Set up routes
 app.use("/", require("./routes"));
 
 app.listen(port, function (err) {
   if (err) {
-    console.log("error in the code", err);
-    // console.log(`error in running server ${err}`);//by interpolation
+    console.log("Error in the code", err);
   }
   console.log(`Server is running on the port: ${port}`);
 });
