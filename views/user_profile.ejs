@@ -1,9 +1,10 @@
+<!-- views/user_profile.ejs -->
 <body>
-    <div id="user">
-        <h3>hey !! <strong><%= user.name %></strong>welcome</h3>
+  <div id="user">
+    <h3>hey !! <strong><%= user.name %></strong> welcome</h3>
 
-        <% if(locals.user) {%>
-            <a href="/users/sign-out" id="btn"></a>
-        <%}%>
-    </div>
+    <% if(locals.user) {%>
+    <a href="/users/sign-out" id="btn">sign-out</a>
+    <%}%>
+  </div>
 </body>

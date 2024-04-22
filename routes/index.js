@@ -1,3 +1,4 @@
+//routes/index.js
 const express = require('express');
 const homeController = require('../controllers/home_controller');
 const router = express.Router();

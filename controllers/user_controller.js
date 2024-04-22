@@ -1,4 +1,6 @@
+// controllers/user_comtroller.js
 const User = require('../models/user');
+const bcrypt = require("bcrypt");
 
 //render the sign up page
 module.exports.signUp = function(req,res){
@@ -32,46 +34,67 @@ module.exports.create = async function (req, res) {
 };
 
 
-//create session for the user
-module.exports.createSession = async function(req, res) {
-    try {
-        // Find the user
-        const user = await User.findOne({ email: req.body.email });
+module.exports.createSession = async function (req, res) {
+  try {
+    // Find the user
+    const user = await User.findOne({ email: req.body.email });
 
-        // Handle user not found
-        if (!user) {
-            return res.redirect('back');
-        }
-
-        // Handle password mismatch
-        if (user.password !== req.body.password) {
-            return res.redirect('back');
-        }
-
-        // Handle session creation
-        res.cookie('user_id', user.id);
-        console.log(user.id);
-        return res.redirect('/user/profile');
-    } catch (error) {
-        console.log('Error in finding user or signing in:', error);
-        return res.redirect('back');
+    // Handle user not found
+    if (!user) {
+      req.flash("error", "Invalid username or password");
+      return res.redirect("back");
     }
-}
 
-//to show profile
-module.exports.profile = function(req,user){
-  if(req.cookies.user_id){
-    User.findById(req.cookies.user_id,function(err,user){
-      if(user){
-        return res.render('user_profile',{
+    // Compare hashed passwords
+    const isPasswordMatch = await bcrypt.compare(
+      req.body.password,
+      user.password
+    );
+
+    // Handle password mismatch
+    if (!isPasswordMatch) {
+      req.flash("error", "Invalid username or password");
+      return res.redirect("back");
+    }
+
+    //set user to locals
+    // res.locals.user = user;
+
+    // Handle session creation
+    res.cookie("user_id", user.id);
+    console.log("User ID:", user.id);
+    return res.redirect("/users/profile");
+  } catch (error) {
+    console.log("Error in finding user or signing in:", error);
+    req.flash("error", "Something went wrong");
+    return res.redirect("back");
+  }
+};
+
+module.exports.profile = async function(req, res) {
+  try {
+    // Check if user_id exists in cookies
+    if (req.cookies.user_id) {
+      // Find user by ID
+      let user = await User.findById(req.cookies.user_id);
+      console.log("User profile:", user); // Log user profile for debugging
+      // If user exists, render user profile
+      if (user) {
+        return res.render("user_profile", {
           title: "User Profile",
-          user: user
-        })
-      }else{
-        return res.redirect('/');
+          user: user,
+        });
+      } else {
+        // If user not found, redirect to homepage
+        return res.redirect("/");
       }
-    });
-  }else{
-    return res.redirect('/');
+    } else {
+      // If user_id is not found in cookies, redirect to homepage
+      return res.redirect("/");
+    }
+  } catch (err) {
+    // Handle any errors
+    console.log("Error in profile function:", err);
+    return res.redirect("/");
   }
 }
