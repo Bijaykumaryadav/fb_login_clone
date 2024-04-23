@@ -31,6 +31,7 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
+//here model name automatically pluralize and saved as a collection in the database
+const User = mongoose.model('bijay', userSchema); 
 
-const User = mongoose.model('User', userSchema); // Corrected the model name and schema parameter
 module.exports = User;

@@ -22,10 +22,10 @@ module.exports.create = async function (req, res) {
       // user doesnot exist
       const newUser = await User.create(req.body);
       // userSignUpMailer.signUp(newUser); //todo later
-      req.flash("success", "Created Account Successfully!");
+      // req.flash("success", "Created Account Successfully!");
       return res.redirect("/");
     } else {
-      req.flash("error", "User Already Exists!");
+      // req.flash("error", "User Already Exists!");
       return res.redirect("/");
     }
   } catch (err) {
@@ -41,7 +41,7 @@ module.exports.createSession = async function (req, res) {
 
     // Handle user not found
     if (!user) {
-      req.flash("error", "Invalid username or password");
+      // req.flash("error", "Invalid username or password"); //todo later
       return res.redirect("back");
     }
 
@@ -53,7 +53,7 @@ module.exports.createSession = async function (req, res) {
 
     // Handle password mismatch
     if (!isPasswordMatch) {
-      req.flash("error", "Invalid username or password");
+      // req.flash("error", "Invalid username or password");
       return res.redirect("back");
     }
 
@@ -66,7 +66,7 @@ module.exports.createSession = async function (req, res) {
     return res.redirect("/users/profile");
   } catch (error) {
     console.log("Error in finding user or signing in:", error);
-    req.flash("error", "Something went wrong");
+    // req.flash("error", "Something went wrong");
     return res.redirect("back");
   }
 };
