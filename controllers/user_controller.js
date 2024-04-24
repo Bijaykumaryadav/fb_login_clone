@@ -1,20 +1,21 @@
 // controllers/user_comtroller.js
-const User = require('../models/user');
+const User = require("../models/user");
 const bcrypt = require("bcrypt");
+const crypto = require("crypto");
 
 //render the sign up page
-module.exports.signUp = function(req,res){
-    return res.render('user_sign_up',{
-        title: "Facebook SignUp"
-    })
-}
+module.exports.signUp = function (req, res) {
+  return res.render("user_sign_up", {
+    title: "Facebook SignUp",
+  });
+};
 
 //to get the sign up data
 module.exports.create = async function (req, res) {
   try {
     if (req.body.password != req.body.confirm_password) {
       console.log("Password and Confirm password are different!");
-      return res.redirect('back');
+      return res.redirect("back");
     }
     const user = await User.findOne({ email: req.body.email });
 
@@ -30,9 +31,9 @@ module.exports.create = async function (req, res) {
     }
   } catch (err) {
     console.log(`errror in creating session for user ${err}`);
+    return res.redirect("/");
   }
 };
-
 
 module.exports.createSession = async function (req, res) {
   try {
@@ -71,7 +72,7 @@ module.exports.createSession = async function (req, res) {
   }
 };
 
-module.exports.profile = async function(req, res) {
+module.exports.profile = async function (req, res) {
   try {
     // Check if user_id exists in cookies
     if (req.cookies.user_id) {
@@ -97,4 +98,20 @@ module.exports.profile = async function(req, res) {
     console.log("Error in profile function:", err);
     return res.redirect("/");
   }
+};
+
+//to show forget password email form 
+module.exports.forgottenPasswordForm = function(req,res){
+  return res.render('forgotten_password_email_form',{
+    title: 'Reset Password!'
+  })
 }
+
+//to fetch data from forgot email form //todo later
+// module.exports.forgottenPassword = async function(req,res){
+//   const user = await User.findOne({email: req.body.email});
+//   console.log(user);
+//   if(user){
+
+//   }
+// }
