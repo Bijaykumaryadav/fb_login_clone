@@ -1,12 +1,12 @@
 //routes/index.js
-const express = require('express');
-const homeController = require('../controllers/home_controller');
+const express = require("express");
+const homeController = require("../controllers/home_controller");
 const router = express.Router();
 
-router.get('/',homeController.home);
-router.use('/users',require('./users'));
+router.get("/", homeController.home);
+router.use("/users", require("./users"));
 
-// router.get('session-data',(req,res)=>{
-//     res.send(req.session);
+// router.get("session-data", (req, res) => {
+//   res.send(req.session);
 // });
 module.exports = router;

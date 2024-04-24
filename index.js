@@ -22,7 +22,8 @@ const passportLocal = require('./config/passport-local-strategy');
 const expressLayouts = require("express-ejs-layouts");
 
 //to set cookie-parser
-app.use(express.urlencoded()); //When a form is submitted from a client (e.g., a web browser), the form data is encoded and sent in the body of the HTTP request. The express.urlencoded() middleware parses this form data and makes it available in req.body object of the incoming request. This allows you to access the form data submitted by the client in your route handlers.
+app.use(express.urlencoded({ extended: true }));
+ //When a form is submitted from a client (e.g., a web browser), the form data is encoded and sent in the body of the HTTP request. The express.urlencoded() middleware parses this form data and makes it available in req.body object of the incoming request. This allows you to access the form data submitted by the client in your route handlers.
 
 //to set layout note: if you want to add favicon and other like title then you have to use express-ejs-layouts
 app.use(expressLayouts);
@@ -42,6 +43,7 @@ app.use(cookieParser()); //The cookieParser() middleware in Express.js is used t
 // Setup session middleware
 app.use(
   session({
+    name: 'facebook_clone',
     secret: "your-secret-key",
     resave: false,
     saveUninitialized: false,

@@ -1,16 +1,19 @@
 // controllers/user_comtroller.js
 const User = require("../models/user");
-const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 
 //render the sign up page
 module.exports.signUp = function (req, res) {
+  //if users is already signed in don't show the signin page rather than show profile page
+  if (req.isAuthenticated()) {
+    return res.redirect("/users/profile");
+  }
   return res.render("user_sign_up", {
     title: "Facebook SignUp",
   });
 };
 
-//to get the sign up data
+//to fetch up the data from the signup form
 module.exports.create = async function (req, res) {
   try {
     if (req.body.password != req.body.confirm_password) {
@@ -35,83 +38,38 @@ module.exports.create = async function (req, res) {
   }
 };
 
+//to create session
 module.exports.createSession = async function (req, res) {
-  try {
-    // Find the user
-    const user = await User.findOne({ email: req.body.email });
-
-    // Handle user not found
-    if (!user) {
-      // req.flash("error", "Invalid username or password"); //todo later
-      return res.redirect("back");
-    }
-
-    // Compare hashed passwords
-    const isPasswordMatch = await bcrypt.compare(
-      req.body.password,
-      user.password
-    );
-
-    // Handle password mismatch
-    if (!isPasswordMatch) {
-      // req.flash("error", "Invalid username or password");
-      return res.redirect("back");
-    }
-
-    //set user to locals
-    // res.locals.user = user;
-
-    // Handle session creation
-    res.cookie("user_id", user.id);
-    console.log("User ID:", user.id);
-    return res.redirect("/users/profile");
-  } catch (error) {
-    console.log("Error in finding user or signing in:", error);
-    // req.flash("error", "Something went wrong");
-    return res.redirect("back");
-  }
+  return res.redirect("/users/profile");
 };
 
 module.exports.profile = async function (req, res) {
-  try {
-    // Check if user_id exists in cookies
-    if (req.cookies.user_id) {
-      // Find user by ID
-      let user = await User.findById(req.cookies.user_id);
-      console.log("User profile:", user); // Log user profile for debugging
-      // If user exists, render user profile
-      if (user) {
-        return res.render("user_profile", {
-          title: "User Profile",
-          user: user,
-        });
-      } else {
-        // If user not found, redirect to homepage
-        return res.redirect("/");
-      }
-    } else {
-      // If user_id is not found in cookies, redirect to homepage
-      return res.redirect("/");
-    }
-  } catch (err) {
-    // Handle any errors
-    console.log("Error in profile function:", err);
-    return res.redirect("/");
-  }
+  return res.render("user_profile", {
+    title: "User",
+  });
 };
 
-//to show forget password email form 
-module.exports.forgottenPasswordForm = function(req,res){
-  return res.render('forgotten_password_email_form',{
-    title: 'Reset Password!'
-  })
-}
+//to show forget password email form
+module.exports.forgottenPasswordForm = function (req, res) {
+  return res.render("forgotten_password_email_form", {
+    title: "Reset Password!",
+  });
+};
 
 //to fetch data from forgot email form //todo later
 // module.exports.forgottenPassword = async function(req,res){
 //   const user = await User.findOne({email: req.body.email});
 //   console.log(user);
-//   if(user){
-
+//   if(user){//if user with that email exists send reset password link via email
+//     user.token = crypto.randomBytes(20).toString('hex');
+//     user.save();
+//     console.log(user.email);
+//     forgottenPasswordMailer.forgottenPassword(user.token,user);
+//     return res.redirect('/');
+//   }else{
+//     console.log('User not Registered!!');
+//     return res.redirect('/');
 //   }
 // }
+
+
