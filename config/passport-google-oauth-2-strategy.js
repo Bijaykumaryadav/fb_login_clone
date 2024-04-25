@@ -8,18 +8,10 @@ const User = require("../models/user");
 passport.use(
   new googleStrategy(
     {
-      web: {
-        client_id:
-          "499369908385-d16fqo965eur07pm8k3cdqleac3unms1.apps.googleusercontent.com",
-        project_id: "fb-login-clone-421401",
-        auth_uri: "https://accounts.google.com/o/oauth2/auth",
-        token_uri: "https://oauth2.googleapis.com/token",
-        auth_provider_x509_cert_url:
-          "https://www.googleapis.com/oauth2/v1/certs",
-        client_secret: "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",
-        redirect_uris: ["http://localhost:8000"],
-        javascript_origins: ["http://localhost:8000"],
-      },
+      clientID:
+        "624818478031-af64bvlo2lp1bobicqtmghrgk1tfvpn8.apps.googleusercontent.com",
+      clientSecret: "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",
+      callbackURL: "http://127.0.0.1:8000/users/auth/google/callback",
     },
     async function (accessToken, refreshToken, profile, done) {
       try {

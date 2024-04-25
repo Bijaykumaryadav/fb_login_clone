@@ -102,7 +102,6 @@ module.exports.updatePassword = async function(req,res){
   }
 }
 
-//to destroy session
 //to signout
 module.exports.destroySession = function(req,res){
   req.logout(function(err){

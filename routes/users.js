@@ -24,7 +24,7 @@ router.get(
   passport.authenticate("google", { scope: ["email", "profile"] })
 );
 router.get(
-  "auth/google/callback",
+  "/auth/google/callback",
   passport.authenticate("google", { failureRedirect: "/" }),
   usersController.createSession
 );
