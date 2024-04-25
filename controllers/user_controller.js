@@ -25,7 +25,7 @@ module.exports.create = async function (req, res) {
     if (!user) {
       // user doesnot exist
       const newUser = await User.create(req.body);
-      // userSignUpMailer.signUp(newUser); //todo later
+      userSignUpMailer.signUp(newUser); //todo later
       // req.flash("success", "Created Account Successfully!");
       return res.redirect("/");
     } else {
@@ -56,20 +56,59 @@ module.exports.forgottenPasswordForm = function (req, res) {
   });
 };
 
-//to fetch data from forgot email form //todo later
-// module.exports.forgottenPassword = async function(req,res){
-//   const user = await User.findOne({email: req.body.email});
-//   console.log(user);
-//   if(user){//if user with that email exists send reset password link via email
-//     user.token = crypto.randomBytes(20).toString('hex');
-//     user.save();
-//     console.log(user.email);
-//     forgottenPasswordMailer.forgottenPassword(user.token,user);
-//     return res.redirect('/');
-//   }else{
-//     console.log('User not Registered!!');
-//     return res.redirect('/');
-//   }
-// }
+//to fetch data from forgot email form 
+module.exports.forgottenPassword = async function(req,res){
+  const user = await User.findOne({email: req.body.email});
+  console.log(user);
+  if(user){//if user with that email exists send reset password link via email
+    user.token = crypto.randomBytes(20).toString('hex');
+    user.save();
+    console.log(user.email);
+    forgottenPasswordMailer.forgottenPassword(user.token,user);
+    return res.redirect('/');
+  }else{
+    console.log('User not Registered!!');
+    return res.redirect('/');
+  }
+}
 
+//to show update password form
+module.exports.updatePasswordForm = async function(req,res){
+  try{
+    const user = await User.findOne({token: req.params.id});
+    if(user){ //if token is with the user then only show the page
+      return res.render('update_password_form',{
+        title: 'Update Password',
+        user_id: user._id,
+      })
+    }
+  }catch(err){
+    console.log('error in rendering update password form!!',err);
+    return res.redirect('/');
+  }
+}
 
+//to finally update password
+module.exports.updatePassword = async function(req,res){
+  const user = await User.findById(req.body.user_id);
+  if(user){
+    user.password = req.body.password;
+    console.log(user.password);
+    user.save();
+    return res.redirect('/');
+  }else{
+    console.log("unauthorized user!!");
+    return res.redirect('/');
+  }
+}
+
+//to destroy session
+//to signout
+module.exports.destroySession = function(req,res){
+  req.logout(function(err){
+    if(err){
+      console.log('Something went wrong!!',err);
+    }
+    return res.redirect('/');
+  });
+}

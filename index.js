@@ -44,7 +44,7 @@ app.use(cookieParser()); //The cookieParser() middleware in Express.js is used t
 app.use(
   session({
     name: 'facebook_clone',
-    secret: "your-secret-key",
+    secret: "krishnachapri",
     resave: false,
     saveUninitialized: false,
     cookie: {
