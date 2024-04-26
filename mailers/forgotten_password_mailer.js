@@ -1,3 +1,4 @@
+//mailers/forgotten_password_mailer.js
 const nodemailer = require("../config/nodemailer");
 
 module.exports.forgottenPassword = function (token, user) {

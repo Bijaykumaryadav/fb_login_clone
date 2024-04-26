@@ -1,5 +1,9 @@
 // controllers/user_comtroller.js
 const User = require("../models/user");
+const path = require('path');
+const fs = require('fs');
+const userSignUpMailer = require('../mailers/sign_up_mailer');
+const forgottenPasswordMailer = require('../mailers/forgotten_password_mailer');
 const crypto = require("crypto");
 
 //render the sign up page

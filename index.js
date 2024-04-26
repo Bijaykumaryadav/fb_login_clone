@@ -15,8 +15,12 @@ const session = require("express-session"); //middleware for Express.js that pro
 
 const MongoStore = require("connect-mongo"); //is a session store for Express and Connect, which allows you to store session data in MongoDB
 
+//to set passport local strategy
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
+
+//setup the authentication using google
+const googleStrategy = require('./config/passport-google-oauth-2-strategy');
 
 //to set layout
 const expressLayouts = require("express-ejs-layouts");

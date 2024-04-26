@@ -1,3 +1,4 @@
+//config/environment.js
 const development = {
   name: "clone_development",
   asset_path: "./assets",

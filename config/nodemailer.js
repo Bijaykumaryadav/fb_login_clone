@@ -1,3 +1,4 @@
+//config/nodemailer.js
 const nodemailer = require('nodemailer');
 const path = require('path');
 const ejs = require('ejs');

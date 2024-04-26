@@ -15,7 +15,7 @@ router.get("/profile", passport.checkAuthentication, usersController.profile);
 
 router.get("/forgotten-password", usersController.forgottenPasswordForm);
 router.post("/forgotten-password", usersController.forgottenPassword);
-router.get("/update-password/:id", usersController.updatePasswordForm);
+router.get("/update-password/:token", usersController.updatePasswordForm);
 router.post("/update-password", usersController.updatePassword);
 
 //route for sign up or sign in user via google

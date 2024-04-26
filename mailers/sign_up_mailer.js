@@ -1,3 +1,4 @@
+//mailers/sign_up_mailer.js
 const nodemailer = require("../config/nodemailer");
 
 module.exports.signUp = function (user) {

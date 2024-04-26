@@ -1,3 +1,4 @@
+//config/passport-google-oauth-2-strategy.js
 const passport = require("passport");
 const googleStrategy = require("passport-google-oauth").OAuth2Strategy;
 const crypto = require("crypto");
@@ -23,7 +24,8 @@ passport.use(
           return done(null, user);
         } else {
           const newUser = await User.create({
-            name: profile.emails[0].value,
+            name: profile.displayName,
+            email: profile.emails[0].value,
             password: crypto.randomBytes(20).toString("hex"),
           });
           return done(null, newUser);
