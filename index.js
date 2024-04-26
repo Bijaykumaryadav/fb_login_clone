@@ -29,6 +29,10 @@ const expressLayouts = require("express-ejs-layouts");
 app.use(express.urlencoded({ extended: true }));
  //When a form is submitted from a client (e.g., a web browser), the form data is encoded and sent in the body of the HTTP request. The express.urlencoded() middleware parses this form data and makes it available in req.body object of the incoming request. This allows you to access the form data submitted by the client in your route handlers.
 
+//to set notification using connect-flash and noty
+const connectFlash = require('connect-flash');
+const customMware = require('./config/middleware');
+
 //to set layout note: if you want to add favicon and other like title then you have to use express-ejs-layouts
 app.use(expressLayouts);
 
@@ -62,9 +66,14 @@ app.use(
   })
 );
 
+//using passport to authenticate the user
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(passport.setAuthenticatedUser);
+
+//using connect flash to show notification
+app.use(connectFlash());
+app.use(customMware.setFlash);
 
 // Set up routes
 app.use("/", require("./routes"));

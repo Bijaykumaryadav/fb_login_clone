@@ -1,10 +1,27 @@
 <!-- views/user_sign_up.ejs -->
+<link rel="stylesheet" href="/css/user_sign_up.css" />
 <body>
-    <form id="user-sign-up-form" action="/users/create" method="post">
-        <input type="text" name="name" placeholder="Enter your Name" required> <br>
-        <input type="email" name="email" placeholder="Enter your Email" required><br>
-        <input type="password" name="password" placeholder="Enter your password" required><br>
-        <input type="password" name="confirm_password" placeholder="Re-enter your password" required><br>
-        <button id="create-account-btn" type="submit">Create Account</button>
-    </form>
+  <form id="user-sign-up-form" action="/users/create" method="post">
+    <input type="text" name="name" placeholder="Enter your Name" required />
+    <br />
+    <input
+      type="email"
+      name="email"
+      placeholder="Enter your Email"
+      required
+    /><br />
+    <input
+      type="password"
+      name="password"
+      placeholder="Enter your password"
+      required
+    /><br />
+    <input
+      type="password"
+      name="confirm_password"
+      placeholder="Re-enter your password"
+      required
+    /><br />
+    <button id="create-account-btn" type="submit">Create Account</button>
+  </form>
 </body>
